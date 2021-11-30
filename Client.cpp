@@ -7,58 +7,48 @@
 
 using namespace Sync;
 
-// This thread handles the connection to the server
-class ClientThread : public Thread
-{
-private:
-	// Reference to our connected socket
-	Socket& socket;
-
-	// Data to send to server
-	ByteArray data;
-	std::string data_str;
-public:
-	ClientThread(Socket& socket)
-	: socket(socket)
-	{}
-
-	~ClientThread()
-	{}
-
-	virtual long ThreadMain()
-	{
-		int result = socket.Open();
-		std::cout << "Please input your data (done to exit): ";
-		std::cout.flush();
-
-		// Get the data
-		std::getline(std::cin, data_str);
-		data = ByteArray(data_str);
-
-		// Write to the server
-		socket.Write(data);
-
-		// Get the response
-		socket.Read(data);
-		data_str = data.ToString();
-		std::cout << "Server Response: " << data_str << std::endl;
-		return 0;
-	}
-};
-
 int main(void)
 {
-	// Welcome the user 
-	std::cout << "SE3313 Final Project" << std::endl;
 
-	// Create our socket
-	Socket socket("127.0.0.1", 3000);
-	ClientThread clientThread(socket);
-	while(1)
-	{
-		sleep(1);
+	std::string myString;
+	while(true){
+		std::cout << "Please input your data" << std::endl;
+		std::getline(std::cin, myString);
+		if(myString = "done") {
+			std::cout << "Server shutting down" << std::endl;
+			break;
+		}
+
+		try{
+			Socket clientSocket("127.0.0.1", 2000);
+			int x = clientSocket.Open();
+			ByteArray array(myString);
+			int y = clientSocket(array);
+
+			if(myString == "close")
+			{
+				sleep(50);
+				Socket closeSocket("127.0.0.1", 2000);
+				closeSocket.Open();
+
+				ByteArray closeArray("Take care!");
+				closeSocket.Write(closeArray);
+				closeSocket.Close();
+				break;
+			}
+
+			ByteArray warningArray("Text should be cleared!");
+			int z = clientSocket.Read(warningArray);
+
+			std::string returnStr = warningArray.ToString();
+			std::cout<< returnStr << std::endl;
+			std::cout<< std::endl;D
+			clientSocket.Close();
+		}
+		catch(std::string&s)
+		{
+			std::cout << "Server is offline" << std::endl;
+			break;
+		}
 	}
-	socket.Close();
-
-	return 0;
 }
