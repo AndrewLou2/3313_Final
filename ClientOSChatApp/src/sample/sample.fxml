@@ -6,19 +6,19 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <HBox prefHeight="700.0" prefWidth="251.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="700.0" prefWidth="408.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="92.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="92.0" styleClass="dark-gray-background" stylesheets="@../values/styles.css">
                <children>
                   <Pane layoutX="10.0" layoutY="298.0" prefHeight="394.0" prefWidth="92.0" />
                   <ImageView fitHeight="48.0" fitWidth="38.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/chat.png" />
+                        <Image url="@../img/chat%20(1).png" />
                      </image></ImageView>
                   <Pane prefHeight="361.0" prefWidth="92.0" />
-                  <ImageView fitHeight="48.0" fitWidth="38.0" layoutX="37.0" layoutY="341.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="48.0" fitWidth="38.0" layoutX="37.0" layoutY="341.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/cancel-button.png" />
+                        <Image url="@../img/logout.png" />
                      </image>
                      <VBox.margin>
                         <Insets bottom="30.0" />
@@ -26,6 +26,7 @@
                   </ImageView>
                </children>
             </VBox>
+            <VBox prefHeight="200.0" prefWidth="315.0" styleClass="gray-background" stylesheets="@../values/styles.css" />
          </children>
       </HBox>
    </left>
