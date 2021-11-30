@@ -80,9 +80,9 @@ public:
 class ServerThread : public Thread
 {
 private:
-    Socket &socket;
+    SocketServer& server;
     bool terminate = false;
-    std::vector<SocketThread *> sockThrHolder;
+    std::vector<SocketThread*> sockThrHolder;
 
 public:
     ServerThread(SocketServer &server)
