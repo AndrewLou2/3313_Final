@@ -159,4 +159,4 @@ int main(void)
     std::cin.get();
 
     // Shut down and clean up the server
-    server.Shutdown();
+  server.Shutdown();
