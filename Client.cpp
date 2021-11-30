@@ -9,50 +9,47 @@ using namespace Sync;
 
 int main(void)
 {
+	// Welcome the user
+	std::cout << "SE3313 Lab 3 Client" << std::endl;
 
-	std::string myString;
-	while (true)
+	// Create our socket
+	Socket socket("127.0.0.1", 3000);
+	std::string input;
+	ByteArray data;
+	try
 	{
-		std::cout << "Please input your data" << std::endl;
-		std::getline(std::cin, myString);
-		if (myString = "done")
+		socket.Open(); //open the socket
+		while (true)
 		{
-			std::cout << "Server shutting down" << std::endl;
-			break;
-		}
+			std::cout << "Enter a string, or done to terminate the client, or close to shutdown the server." << std::endl;
+			getline(std::cin, input);
 
-		try
-		{
-			Socket clientSocket("127.0.0.1", 2000);
-			int x = clientSocket.Open();
-			ByteArray array(myString);
-			int y = clientSocket(array);
-
-			if (myString == "close")
+			data = *new ByteArray(input);
+			if (input == "done" || input == "close")
 			{
-				sleep(50);
-				Socket closeSocket("127.0.0.1", 2000);
-				closeSocket.Open();
-
-				ByteArray closeArray("Take care!");
-				closeSocket.Write(closeArray);
-				closeSocket.Close();
+				socket.Write(data);
+				std::cout << "Client closed." << std::endl;
 				break;
 			}
+			else
+			{
+				socket.Write(data);
+				socket.Read(data);
+				if (data.ToString() == "close" || data.ToString() == "") //if Close recieved or an empty string, server is closed
+				{
+					std::cout << "Server Closed... Terminating Client" << std::endl;
+					break; //shutdown if sent Close
+				}
 
-			ByteArray warningArray("Text should be cleared!");
-			int z = clientSocket.Read(warningArray);
-
-			std::string returnStr = warningArray.ToString();
-			std::cout << returnStr << std::endl;
-			std::cout << std::endl;
-			D
-				clientSocket.Close();
+				std::cout << data.ToString() << std::endl;
+			}
 		}
-		catch (std::string &s)
-		{
-			std::cout << "Server is offline" << std::endl;
-			break;
-		}
+		socket.Close();
 	}
-}
+	catch (...)
+	{ //Server not open, send error msg
+		std::string errorMsg = "Server is not open... terminating Client";
+		std::cout << errorMsg << std::endl;
+	}
+	return 0;
+};
