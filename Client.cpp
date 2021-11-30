@@ -11,21 +11,24 @@ int main(void)
 {
 
 	std::string myString;
-	while(true){
+	while (true)
+	{
 		std::cout << "Please input your data" << std::endl;
 		std::getline(std::cin, myString);
-		if(myString = "done") {
+		if (myString = "done")
+		{
 			std::cout << "Server shutting down" << std::endl;
 			break;
 		}
 
-		try{
+		try
+		{
 			Socket clientSocket("127.0.0.1", 2000);
 			int x = clientSocket.Open();
 			ByteArray array(myString);
 			int y = clientSocket(array);
 
-			if(myString == "close")
+			if (myString == "close")
 			{
 				sleep(50);
 				Socket closeSocket("127.0.0.1", 2000);
@@ -41,11 +44,12 @@ int main(void)
 			int z = clientSocket.Read(warningArray);
 
 			std::string returnStr = warningArray.ToString();
-			std::cout<< returnStr << std::endl;
-			std::cout<< std::endl;D
-			clientSocket.Close();
+			std::cout << returnStr << std::endl;
+			std::cout << std::endl;
+			D
+				clientSocket.Close();
 		}
-		catch(std::string&s)
+		catch (std::string &s)
 		{
 			std::cout << "Server is offline" << std::endl;
 			break;
