@@ -8,157 +8,110 @@
 
 using namespace Sync;
 
-// thread handling the clients' sockets
-class SocketThread : public Thread
+// This thread handles the server operations
+class ServerThread : public Thread
 {
 private:
-    Socket &socket;
-
-    ByteArray data;
-
-    bool &terminate;
-
-    std::vector<SocketThread *> &sockThrHolder;
+    SocketServer &server;
 
 public:
-    SocketThread(Socket &socket, bool &terminate, std::vector<SocketThread *> &clientSockThr)
-        : socket(socket), terminate(terminate), sockThrHolder(clientSockThr)
+    Event connEvent;
+    Event shutdownEvent;
+    bool *shutdown;
+    ServerThread(SocketServer &server, Event &e, bool *s, Event &e2)
+        : server(server)
     {
+        connEvent = *new Event(e);
+        shutdown = s;
+        shutdownEvent = *new Event(e2);
     }
 
-    ~SocketThread()
+    ~ServerThread()
     {
-        this->terminationEvent.Wait();
-    }
-
-    Socket &GetSocket()
-    {
-        return socket;
+        terminationEvent.Wait();
+        // Cleanup
+        //...
     }
 
     virtual long ThreadMain()
     {
-
-        try
+        std::cout << "Thread Created" << std::endl;
+        // Wait for a client socket connection
+        ByteArray data;
+        std::string inStr;
+        std::string outStr;
+        Socket *newConnection = new Socket(server.Accept());
+        connEvent.Trigger();
+        // A reference to this pointer
+        Socket &socketReference = *newConnection;
+        FlexWait incomingData(2, &socketReference, &shutdownEvent);
+        while (!*shutdown)
         {
-            while (!terminate) // while this boolean is false (to know whether to keep listening)
+            incomingData.Wait();
+            if (*shutdown)
             {
-
-                socket.Read(data); // read the data as a string from the client from the socket
-                std::string res = data.ToString();
-                std::for_each(res.begin(), res.end(), [](char &res)
-                              {
-                    res = ::tolower(res); // transform the data to lower case });
-
-                    // if loop to ensure graceful termination
-                    if (res == "done")
-                    { // check if done is received
-                        sockThrHolder.erase(std::remove(sockThrHolder.begin(), sockThrHolder.end(), this), sockThrHolder.end());
-                        terminate = true; // close socket and set boolean value to true to break the loop
-                        break;
-                    }
-
-                    res.append(" - has been received");
-                    socket.Write(ByteArray(res)); // send modified version of response back to client
+                break;
             }
-            }
-            catch (std::string &s)
+            socketReference.Read(data);
+            inStr = data.ToString();
+            if (inStr == "done") //Close client terminal
             {
-                std::cout << s << std::endl;
+                std::string msg = "Thread terminated";
+                std::cout << msg << std::endl;
+                break;
             }
-
-            catch (std::string err)
+            else if (inStr == "close") //shutdown server
             {
-                std::cout << err << std::endl;
+                std::string msg = "Server Shutting Down.";
+                std::cout << msg << std::endl;
+                *shutdown = true;
+                shutdownEvent.Trigger(); //trigger this to allow the server to exit
+                break;
             }
-            std::cout << "Client Disconnected" << std::endl;
-            return 0; // initiate server shutdown/cleanup
+            outStr = "";
+            for (int i = 0; i < inStr.length(); i++)
+            {
+                outStr += toupper(inStr[i]);
+            }
+            data = *new ByteArray(outStr);
+            socketReference.Write(data);
         }
-    };
+        //if the code reaches here, shutdown is initiated.
+        socketReference.Write(*new ByteArray("Close")); //send the shutdown signal
 
-    // This is for server operations
-    class ServerThread : public Thread
-    {
-    private:
-        SocketServer &server;
-        bool terminate = false;
-        std::vector<SocketThread *> sockThrHolder;
-
-    public:
-        ServerThread(SocketServer &server)
-            : server(server)
-        {
-        }
-
-        ~ServerThread()
-        {
-            // Cleanup
-            for (auto thread : sockThrHolder)
-            {
-                try
-                {
-                    Socket &toClose = thread->GetSocket();
-                    toClose.Close();
-                }
-                catch (...)
-                {
-                }
-            }
-            std::vector<SocketThread *>().swap(sockThrHolder);
-            std::cout << "closing socket and disconnecting client from server" << std::endl;
-            terminate = true;
-        }
-
-        virtual long ThreadMain()
-        {
-            while (1)
-            {
-                try
-                {
-                    // wait for a client socket
-                    Socket *newConnection = new Socket(server.Accept());
-
-                    ThreadSem serverBlock(1);
-
-                    // Pass a reference to this pointer
-                    Socket &socketReference = *newConnection;
-                    sockThrHolder.push_back(new SocketThread(socketReference, terminate, std::ref(sockThrHolder)));
-                }
-                catch (std::string error)
-                {
-                    std::cout << "ERROR: " << error << std::endl;
-
-                    return 1;
-                }
-
-                catch (TerminationException terminationException)
-                {
-                    std::cout << "Server has shut down!" << std::endl;
-
-                    return terminationException;
-                }
-            }
-            return 0; // initiate server shutdown/cleanup
-        }
-    };
-
-    int main(void)
-    {
-        std::cout << "hello! i am a server" << std::endl;
-        std::cout << "press enter if you wish to terminate me";
-        std::cout.flush();
-
-        // create server on port 3000
-        SocketServer server(3000);
-
-        // thread to perform server operations
-        ServerThread serverThread(server);
-
-        // waits for the input (signal to shutdown the server)
-        FlexWait cinWaiter(1, stdin);
-        cinWaiter.Wait();
-        std::cin.get();
-
-        // Shut down and clean up the server
-        server.Shutdown();
+        return 1;
     }
+};
+
+int main(void)
+{
+    std::cout << "I am a server." << std::endl;
+    // Create our server
+    SocketServer server(3000);
+    Event connEvent;
+    Event shutdownEvent;
+    // Need a thread to perform  server operations
+    bool shutdown = false;
+    FlexWait serverWaiter(2, &server, &shutdownEvent);
+    FlexWait eventWaiter(1, &connEvent);
+    while (!shutdown)
+    {
+        serverWaiter.Wait(); //wait until there is an attempt to connect, then..
+        if (!shutdown)
+        {
+            ServerThread *serverThread = new ServerThread(server, connEvent, &shutdown, shutdownEvent);
+        }
+        else
+        {
+            break;
+        }
+        eventWaiter.Wait();
+        connEvent.Reset();
+    }
+
+    /*// This will wait for input to shutdown the server
+    FlexWait cinWaiter(1, stdin);
+    cinWaiter.Wait();*/
+    server.Shutdown();
+    // Shut down and clean up the server
+}
