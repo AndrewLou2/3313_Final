@@ -60,7 +60,12 @@ public:
                 std::cout << msg << std::endl;
                 break;
             }
+<<<<<<< HEAD
             else if (inStr == "close") //shutdown server
+=======
+           
+            catch (std::string &s)
+>>>>>>> 25db9a4 (add edits)
             {
                 std::string msg = "Server Shutting Down.";
                 std::cout << msg << std::endl;
@@ -109,9 +114,15 @@ int main(void)
         connEvent.Reset();
     }
 
+<<<<<<< HEAD
     /*// This will wait for input to shutdown the server
     FlexWait cinWaiter(1, stdin);
     cinWaiter.Wait();*/
     server.Shutdown();
     // Shut down and clean up the server
 }
+=======
+        // Shut down and clean up the server
+        server.Shutdown();
+    }};
+>>>>>>> 25db9a4 (add edits)
