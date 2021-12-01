@@ -1,5 +1,5 @@
 import tkinter
-from tkinter.constants import CENTER, LEFT, RIGHT
+from tkinter.constants import ANCHOR, CENTER, LEFT, N, NW, RIGHT, S, TOP, W
 
 
 #create a GUI app using tkinter
@@ -23,20 +23,41 @@ my_username = tkinter.StringVar()
 #setting default "" for username
 my_username.set("")
 
+
+# Label(frame1, text="Name").grid(row=0, column=0, sticky=W)
+#     nameVar = StringVar()
+#     name = Entry(frame1, textvariable=nameVar)
+#     name.grid(row=0, column=1, sticky=W)
+
+
+
 # creating a label for
 # name using widget Label
 #ameena makeeeee it to the centerrrrrr
 name_label = tkinter.Label(top, text = 'Username', font=('calibre',10, 'bold'))
-name_label.grid(row=0,column=0)
+name_label.pack(side=TOP, anchor="n")
+#name_label.grid(row=0,column=0,pady=20, padx=100, sticky=N)
 #name_label.place(x=25, y=25, anchor="center")
   
 # creating a entry for input
 # name using widget Entry
 name_entry = tkinter.Entry(top,textvariable = my_username, font=('calibre',10,'normal'))
-name_entry.grid(row=0,column=1)
+name_entry.pack(anchor="n")
+#name_entry.grid(row=0,column=1,pady=20,sticky=N)
 
 
+#message_label.grid(row=1,column=0)
 
+scrollbar = tkinter.Scrollbar(messages_frame) 
+msg_list = tkinter.Listbox(messages_frame, height=30, width=100, yscrollcommand=scrollbar.set)
+scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
+msg_list.pack()
+messages_frame.pack()
+
+
+message_label = tkinter.Label(top, font=('calibre',10, 'bold'),text="Enter message: ")
+message_label.pack()
 
 # username_label = tkinter.Label(top,text="Enter username: ", )
 # username_label.pack(side=LEFT)
@@ -54,8 +75,7 @@ name_entry.grid(row=0,column=1)
 # messages_frame.pack()
 
 
-# message_label = tkinter.Label(top, text="Enter message: ")
-# message_label.pack()
+#
 # entry_field = tkinter.Entry(top, textvariable=my_msg, width=50)
 # #entry_field.bind("<Return>", send)
 # entry_field.pack()
