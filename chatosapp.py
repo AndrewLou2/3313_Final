@@ -3,7 +3,6 @@ from threading import Thread
 import tkinter
 from tkinter.constants import CENTER, E, W
 
-
 #handling receiving a message and threading it 
 def receive_msg():
     while True:  #as long as there's no operating system errors, keep receiving messages from the client, decoding, and threating it
@@ -28,7 +27,6 @@ def send_msg(event=None):
     #otherwise, send the client's username followed by their message, separated by a semicolon
     client_socket.send(bytes(my_username.get() + ": " + msg, "utf8")) 
 
-
 #handles client closing the window
 def close_window(event=None):
     client_msg.set("{quit}")  #sending the quit message to notify the server 
@@ -42,7 +40,6 @@ def switch_room():
     msg_list.delete(0, tkinter.END)
     msg_list.insert(tkinter.END, "you've switched to room " + str(current_room))  #notify the client the room they've switched to
     msg_list.see(tkinter.END)
-
 
 #setting global variables
 num_rooms = 0 #storing the number of rooms
@@ -117,15 +114,15 @@ num_rooms = int(first_msg)
 #setting the name for each chat room
 selected_room = tkinter.StringVar(top)
 selected_room.set("chat rooms")
-rooms_list = [] #array of the current chatrooms
-for i in range(num_rooms):
+rooms_list = []  #array of the current chatrooms
+for i in range(num_rooms):  #for loop to iterate over all the rooms in the array 
     rooms_list.append("chat room " + str(i + 1))
 
 #creating an option menu listing the chat rooms that are currently available
 chat_rooms = tkinter.OptionMenu(top, selected_room, *rooms_list)
 chat_rooms.config(bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20",font=('calibre',10,'bold'))
 chat_rooms.grid(row=1,column=0,pady=20, padx=20,sticky=W)
-#creating a button to change the room
+#creating a button to allow client to switch rooms
 change_button = tkinter.Button(top, text="switch room",font=('calibre',10,'bold'),bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20", command=switch_room)
 change_button.grid(row=1,column=0,pady=20, padx=150, sticky=W)
 
