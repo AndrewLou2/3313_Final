@@ -17,6 +17,7 @@ OS Chat Room App 💻
   Guest Port: 1236
   ```
   Install **gcc** complier using :
+
  ```$ sudo apt install g++ ```
  Clone the repository using :
  ```$ git clone https://github.com/AndrewLou2/OS-chatroom-app.git```
