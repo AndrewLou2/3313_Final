@@ -5,7 +5,7 @@ from tkinter.constants import CENTER, E, W
 
 
 # This function must be threaded.
-def receive():
+def receive_msg():
     while True:
         try:
             msg = client_socket.recv(BUFFER_SIZE).decode("utf8")
@@ -13,7 +13,7 @@ def receive():
             msg_list.see(tkinter.END)
         except OSError:
             break
-def send(event=None):  # Binders pass the event.
+def send_msg(event=None):  # Binders pass the event.
     msg = client_msg.get()
     client_msg.set("")      # Clears text field.
     global current_room
@@ -29,12 +29,12 @@ def send(event=None):  # Binders pass the event.
 def close_window(event=None):
     # Send server quit message.
     client_msg.set("{quit}")
-    send()
+    send_msg()
 
 # handles the client switching chatrooms
 def switch_room():
     global current_room
-    current_room = ((chatRoomSelected.get()).split(' '))[2]
+    current_room = ((selected_room.get()).split(' '))[2]
     client_socket.send(bytes("/" + current_room, "utf8"))
     msg_list.delete(0, tkinter.END)
     msg_list.insert(tkinter.END, "you've switched to room " + str(current_room))
@@ -98,12 +98,12 @@ messages_frame.grid(row=2,column=0,padx=20)
 
 # creating an entry field for user to input their message
 entry_field = tkinter.Entry(top, textvariable=client_msg, width=87)
-entry_field.bind("<Return>", send)
+entry_field.bind("<Return>", send_msg)
 entry_field.config(bg='#FFFCF7')
 entry_field.grid(row=3,column=0,pady=20,padx=20,sticky=W)
 
 # creating a send button #uncomment somehting here
-send_button = tkinter.Button(top, text="send", width=10, height=1, font=('calibre',10,'bold'), command=send)
+send_button = tkinter.Button(top, text="send", width=10, height=1, font=('calibre',10,'bold'), command=send_msg)
 send_button.config(bg="#013A20", fg= "#FFFCF7",activeforeground= "#FFF", activebackground="#D2BF55")
 send_button.grid(row=3,column=0,pady=20,padx=20,sticky=E)
 
@@ -121,20 +121,20 @@ client_socket.connect(ADDR)
 # Server response of number of rooms available and generate drop down list.
 first_msg = client_socket.recv(BUFFER_SIZE).decode("utf8")
 num_rooms = int(first_msg)
-chatRoomSelected = tkinter.StringVar(top)
-chatRoomSelected.set("chat rooms")
+selected_room = tkinter.StringVar(top)
+selected_room.set("chat rooms")
 rooms_list = []
 for i in range(num_rooms):
     rooms_list.append("chat room " + str(i + 1))
 
-chat_rooms = tkinter.OptionMenu(top, chatRoomSelected, *rooms_list)
+chat_rooms = tkinter.OptionMenu(top, selected_room, *rooms_list)
 chat_rooms.config(bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20",font=('calibre',10,'bold'))
 chat_rooms.grid(row=1,column=0,pady=20, padx=20,sticky=W)
 change_button = tkinter.Button(top, text="switch room",font=('calibre',10,'bold'),bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20", command=switch_room)
 change_button.grid(row=1,column=0,pady=20, padx=150, sticky=W)
 
 
-receive_thread = Thread(target=receive)
+receive_thread = Thread(target=receive_msg)
 receive_thread.start()
 #set resizale to false so user will not be able to resize the window
 top.resizable(width=False, height=False)   
