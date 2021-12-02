@@ -19,18 +19,29 @@ OS Chat Room App 💻
   Install **gcc** complier using :
 
  ```$ sudo apt install g++ ```
+
  Clone the repository using :
+
  ```$ git clone https://github.com/AndrewLou2/OS-chatroom-app.git```
+
  Compile objects and executable files by using:
+
  ```$ make```
+
  Start the server:
+
  ```$ ./Server```
+
 
 **Client-side (Windows 10):**
 Clone the repository using :
+
  ```$ git clone https://github.com/AndrewLou2/OS-chatroom-app.git```
+
  Run the client app  using:
+
  ``` python chatosapp.py```
+
  
 ## 📐 Design Process
 
