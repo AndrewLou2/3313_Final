@@ -3,7 +3,6 @@ from threading import Thread
 import tkinter
 from tkinter.constants import CENTER, E, W
 
-
 #handling receiving a message and threading it
 def receive_msg():
     while True:  #as long as there's no operating system errors, keep receiving messages from the client, decoding, and threating it
@@ -16,7 +15,7 @@ def receive_msg():
 
 #handling sending the client's message 
 def send_msg(event=None):  
-    msg = client_msg.get()  # getting the client's message
+    msg = client_msg.get()  #getting the client's message
     client_msg.set("")    
     global current_room
     #if client's message is "quit"
@@ -27,7 +26,6 @@ def send_msg(event=None):
         return
     #otherwise, send the client's username followed by their message, separated by a semicolon
     client_socket.send(bytes(my_username.get() + ": " + msg, "utf8")) 
-
 
 #handles client closing the window
 def close_window(event=None):
@@ -43,7 +41,6 @@ def switch_room():
     msg_list.insert(tkinter.END, "you've switched to room " + str(current_room))  #notify the client the room they've switched to
     msg_list.see(tkinter.END)
 
-
 #setting global variables
 num_rooms = 0 #storing the number of rooms
 current_room = 0 #storing the client's current room's room number
@@ -51,7 +48,7 @@ current_room = 0 #storing the client's current room's room number
 #creating the GUI
 top = tkinter.Tk()  #using tkinter
 top.geometry("660x600")  #setting window size
-top.title("chat room app")  #add a title to the app
+top.title("Chat Room App")  #add a title to the app
 messages_frame = tkinter.Frame(top)  #adding a frame to the top
 
 #initializing default values
@@ -61,7 +58,7 @@ my_username = tkinter.StringVar()  #username to be set
 my_username.set("")  #setting the default username as "" 
 
 #creating a label for the title of the app
-title_label = tkinter.Label(top, text='welcome to the chat room app!', font=('calibre',20,'bold'),justify=CENTER)
+title_label = tkinter.Label(top, text='welcome to the Chat Room app!', font=('calibre',20,'bold'),justify=CENTER)
 title_label.config(bg='#BACC81',fg='#FFFCF7')
 title_label.grid(row=0,column=0,pady=15)
 
@@ -117,15 +114,15 @@ num_rooms = int(first_msg)
 #setting the name for each chat room
 selected_room = tkinter.StringVar(top)
 selected_room.set("chat rooms")
-rooms_list = [] #array of the current chatrooms
-for i in range(num_rooms):
+rooms_list = []  #array of the current chatrooms
+for i in range(num_rooms):  #for loop to iterate over all the rooms in the array 
     rooms_list.append("chat room " + str(i + 1))
 
 #creating an option menu listing the chat rooms that are currently available
 chat_rooms = tkinter.OptionMenu(top, selected_room, *rooms_list)
 chat_rooms.config(bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20",font=('calibre',10,'bold'))
 chat_rooms.grid(row=1,column=0,pady=20, padx=20,sticky=W)
-#creating a button to change the room
+#creating a button to allow client to switch rooms
 change_button = tkinter.Button(top, text="switch room",font=('calibre',10,'bold'),bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20", command=switch_room)
 change_button.grid(row=1,column=0,pady=20, padx=150, sticky=W)
 
