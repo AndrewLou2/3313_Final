@@ -8,6 +8,7 @@ OS Chat Room App 💻
  note: server can be hosted on a UNIX/LINUX environment
  
  **Server-side (Ubuntu 11.1.0):**
+
   Port-forward VM with the settings:
   ```
   Protocol: TCP
@@ -32,9 +33,8 @@ OS Chat Room App 💻
 
  ```$ ./Server```
 
-
-
 **Client-side (Windows 10):**
+
 Clone the repository using :
 
  ```$ git clone https://github.com/AndrewLou2/OS-chatroom-app.git```
