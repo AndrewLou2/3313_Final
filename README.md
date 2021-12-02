@@ -34,10 +34,13 @@ Clone the repository using :
 ## 📐 Design Process
 
  **UI Design:**
-![](https://cdn.discordapp.com/attachments/868924230102818896/916054324830949376/unknown.png =400x)
+
+ ![](https://cdn.discordapp.com/attachments/868924230102818896/916054324830949376/unknown.png =400x)
  
  **UML Use Case Diagram:**
-![](https://cdn.discordapp.com/attachments/868924230102818896/916056012291702844/UML-Use-Case.png =750x)
+
+ ![](https://cdn.discordapp.com/attachments/868924230102818896/916056012291702844/UML-Use-Case.png =750x)
 
  **UML Deployment Diagram:**
+
  ![](https://cdn.discordapp.com/attachments/868924230102818896/916056012014899200/UML-Deployment.png)
