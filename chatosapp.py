@@ -48,7 +48,7 @@ current_room = 0 #storing the client's current room's room number
 #creating the GUI
 top = tkinter.Tk()  #using tkinter
 top.geometry("660x600")  #setting window size
-top.title("chat room app")  #add a title to the app
+top.title("Chat Room App")  #add a title to the app
 messages_frame = tkinter.Frame(top)  #adding a frame to the top
 
 #initializing default values
@@ -58,7 +58,7 @@ my_username = tkinter.StringVar()  #username to be set
 my_username.set("")  #setting the default username as "" 
 
 #creating a label for the title of the app
-title_label = tkinter.Label(top, text='welcome to the chat room app!', font=('calibre',20,'bold'),justify=CENTER)
+title_label = tkinter.Label(top, text='welcome to the Chat Room app!', font=('calibre',20,'bold'),justify=CENTER)
 title_label.config(bg='#BACC81',fg='#FFFCF7')
 title_label.grid(row=0,column=0,pady=15)
 
