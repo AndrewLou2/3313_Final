@@ -47,7 +47,11 @@ current_room = 0
 
 #create a GUI app using tkinter
 top = tkinter.Tk()
+
+#andrew try changing this size (width X height) if this doesn't work go to line 91 and change "height=30" to whatever might work
 top.geometry("660x700")
+
+
 #add a title to the app
 top.title("Chat Messenger App")
 
@@ -84,6 +88,7 @@ username_entry.grid(row=1,column=0,pady=10,padx=20,ipadx=30,sticky=E)
 
 # creating a scrollbar frame for the messages to be viewed
 scrollbar = tkinter.Scrollbar(messages_frame) 
+#change height maybe
 msg_list = tkinter.Listbox(messages_frame, height=30, width=100, yscrollcommand=scrollbar.set)
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
