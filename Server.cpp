@@ -227,7 +227,8 @@ int main(void)
 	// Declaration of the number of rooms for the chatroom
 	int roomNum = 6;
 
-	std::cout << "3313 Final Server" << std::endl
+	std::cout << "3313 Final Project Server" << std::endl
+			  << "Server is UP!" << std::endl
 			  << "Type done to exit the server gracefully" << std::endl;
 
 	// Creating server
