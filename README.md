@@ -1,7 +1,7 @@
 OS Chat Room App 💻
 ===
 ```OS Chat Room App``` is a multi-user multi-transaction application. the server can be hosted on a UNIX/LINUX environment while the client can be on a different environment such as Windows OS. This application implements concepts of thread synchronization (semaphores), multithreading and socket programming. Multiple users can connect to one of many chat rooms created by the server after launching a python application.
-![Chat-Preview](https://cdn.discordapp.com/attachments/868924230102818896/916048859174699048/unknown.png =700x)
+![Chat-Preview](https://cdn.discordapp.com/attachments/868924230102818896/916048859174699048/unknown.png)
 
 ---
  ## 🌴 Quick Start
@@ -35,11 +35,11 @@ Clone the repository using :
 
  **UI Design:**
 
- ![](https://cdn.discordapp.com/attachments/868924230102818896/916054324830949376/unknown.png =400x)
+ ![](https://cdn.discordapp.com/attachments/868924230102818896/916054324830949376/unknown.png)
  
  **UML Use Case Diagram:**
 
- ![](https://cdn.discordapp.com/attachments/868924230102818896/916056012291702844/UML-Use-Case.png =750x)
+ ![](https://cdn.discordapp.com/attachments/868924230102818896/916056012291702844/UML-Use-Case.png)
 
  **UML Deployment Diagram:**
 
