@@ -4,7 +4,7 @@ import tkinter
 from tkinter.constants import CENTER, E, W
 
 
-# This function must be threaded.
+# create a receive function that must be threaded
 def receive_msg():
     while True:
         try:
@@ -13,10 +13,12 @@ def receive_msg():
             msg_list.see(tkinter.END)
         except OSError:
             break
-def send_msg(event=None):  # Binders pass the event.
+# create a send message function
+def send_msg(event=None):  
     msg = client_msg.get()
-    client_msg.set("")      # Clears text field.
+    client_msg.set("")    
     global current_room
+    #if message equals quit, client socket will close
     if msg == "{quit}":
         client_socket.send(bytes(my_username.get() + " has left the chat!", "utf8"))
         client_socket.close()
@@ -25,7 +27,7 @@ def send_msg(event=None):  # Binders pass the event.
     client_socket.send(bytes(my_username.get() + ": " + msg, "utf8"))
 
 
-# Send quit message to the server.
+# when window is closed, the fucntion will send a quit message to the server
 def close_window(event=None):
     # Send server quit message.
     client_msg.set("{quit}")
@@ -41,16 +43,15 @@ def switch_room():
     msg_list.see(tkinter.END)
 
 
-# Global variables.
+# setting global variables
 num_rooms = 0
 current_room = 0
 
 #create a GUI app using tkinter
 top = tkinter.Tk()
 
-#andrew try changing this size (width X height) if this doesn't work go to line 91 and change "height=30" to whatever might work
+#setting window size
 top.geometry("660x600")
-
 
 #add a title to the app
 top.title("chat room app")
@@ -71,7 +72,7 @@ my_username = tkinter.StringVar()
 my_username.set("")
 
 # creating a label for the title of the app
-title_label = tkinter.Label(top, text='welcome to chat room!', font=('calibre',20,'bold'),justify=CENTER)
+title_label = tkinter.Label(top, text='Welcome to Chat App!', font=('calibre',20,'bold'),justify=CENTER)
 title_label.config(bg='#BACC81',fg='#FFFCF7')
 title_label.grid(row=0,column=0,pady=15)
 
@@ -88,7 +89,6 @@ username_entry.grid(row=1,column=0,pady=10,padx=20,ipadx=30,sticky=E)
 
 # creating a scrollbar frame for the messages to be viewed
 scrollbar = tkinter.Scrollbar(messages_frame) 
-#change height maybe
 msg_list = tkinter.Listbox(messages_frame, height=20, width=100, yscrollcommand=scrollbar.set)
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
@@ -107,36 +107,44 @@ send_button = tkinter.Button(top, text="send", width=10, height=1, font=('calibr
 send_button.config(bg="#013A20", fg= "#FFFCF7",activeforeground= "#FFF", activebackground="#D2BF55")
 send_button.grid(row=3,column=0,pady=20,padx=20,sticky=E)
 
+# using a protocol to handle window close event
 top.protocol("WM_DELETE_WINDOW", close_window)
 
-# Socket with given AWS parameters.
+# Creating a socket with given AWS parameters
 HOST = "127.0.0.1"
 PORT = 1236
 BUFFER_SIZE = 1024
 ADDR = (HOST, PORT)
 
+# creating the client socket
 client_socket = socket(AF_INET, SOCK_STREAM)
 client_socket.connect(ADDR)
 
-# Server response of number of rooms available and generate drop down list.
+# getting the number of rooms available on the server, and a drop-down menu is generated
 first_msg = client_socket.recv(BUFFER_SIZE).decode("utf8")
+#setting num of rooms according the server response
 num_rooms = int(first_msg)
+
+#setting the name for each chat room
 selected_room = tkinter.StringVar(top)
 selected_room.set("chat rooms")
 rooms_list = []
 for i in range(num_rooms):
     rooms_list.append("chat room " + str(i + 1))
 
+# creating an option menu for the number of rooms that are available
 chat_rooms = tkinter.OptionMenu(top, selected_room, *rooms_list)
 chat_rooms.config(bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20",font=('calibre',10,'bold'))
 chat_rooms.grid(row=1,column=0,pady=20, padx=20,sticky=W)
+# creating a button to change the room
 change_button = tkinter.Button(top, text="switch room",font=('calibre',10,'bold'),bg="#D2BF55", fg= "#FFF",activeforeground= "#FFFCF7", activebackground="#013A20", command=switch_room)
 change_button.grid(row=1,column=0,pady=20, padx=150, sticky=W)
 
-
+#threading
 receive_thread = Thread(target=receive_msg)
 receive_thread.start()
 #set resizale to false so user will not be able to resize the window
 top.resizable(width=False, height=False)   
+#configuring the background colour
 top.config(bg='#BACC81')
 tkinter.mainloop()
