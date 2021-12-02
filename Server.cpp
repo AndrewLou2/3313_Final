@@ -180,7 +180,7 @@ public:
 			try
 			{
 				// portNum[int] parse to -> portNum[String]
-				std::string stringPortNum = std::to_string(port);
+				std::string stringPortNum = std::to_string(portNum);
 
 				// Generating semaphores based off port number
 				Semaphore serverBlock(stringPortNum, 1, true);
