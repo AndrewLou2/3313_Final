@@ -49,8 +49,8 @@ current_room = 0
 #create a GUI app using tkinter
 top = tkinter.Tk()
 
-#setting the window size
-top.geometry("660x700")
+#setting window size
+top.geometry("660x600")
 
 #add a title to the app
 top.title("Chat Messenger App")
@@ -88,7 +88,7 @@ username_entry.grid(row=1,column=0,pady=10,padx=20,ipadx=30,sticky=E)
 
 # creating a scrollbar frame for the messages to be viewed
 scrollbar = tkinter.Scrollbar(messages_frame) 
-msg_list = tkinter.Listbox(messages_frame, height=30, width=100, yscrollcommand=scrollbar.set)
+msg_list = tkinter.Listbox(messages_frame, height=20, width=100, yscrollcommand=scrollbar.set)
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
 msg_list.pack()
@@ -110,8 +110,8 @@ send_button.grid(row=3,column=0,pady=20,padx=20,sticky=E)
 top.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Creating a socket with given AWS parameters
-HOST = "35.162.177.130"
-PORT = 3005
+HOST = "127.0.0.1"
+PORT = 1236
 BUFFER_SIZE = 1024
 ADDR = (HOST, PORT)
 
