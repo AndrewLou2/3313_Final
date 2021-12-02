@@ -3,7 +3,7 @@ from threading import Thread
 import tkinter
 from tkinter.constants import CENTER, E, W
 
-#handling receiving a message and threading it 
+#handling receiving a message and threading it
 def receive_msg():
     while True:  #as long as there's no operating system errors, keep receiving messages from the client, decoding, and threating it
         try:
@@ -15,14 +15,14 @@ def receive_msg():
 
 #handling sending the client's message 
 def send_msg(event=None):  
-    msg = client_msg.get()  # getting the client's message
+    msg = client_msg.get()  #getting the client's message
     client_msg.set("")    
     global current_room
     #if client's message is "quit"
     if msg == "{quit}":
         client_socket.send(bytes(my_username.get() + " has left the chat!", "utf8")) #sending message with the client's username to notify the server that the client left the chat
         client_socket.close()  #closing client's socket
-        top.quit()  #quitting the application
+        top.quit()  #Quitting the application
         return
     #otherwise, send the client's username followed by their message, separated by a semicolon
     client_socket.send(bytes(my_username.get() + ": " + msg, "utf8")) 
