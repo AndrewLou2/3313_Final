@@ -7,7 +7,7 @@
 
 using namespace Sync;
 
-// This thread handles the connection to the server
+
 class ClientThread : public Thread
 {
 private:
