@@ -4,7 +4,7 @@ import tkinter
 from tkinter.constants import CENTER, E, W
 
 
-# # create a receive function that must be threaded
+# create a receive function that must be threaded
 def receive_msg():
     while True:
         try:
@@ -13,6 +13,7 @@ def receive_msg():
             msg_list.see(tkinter.END)
         except OSError:
             break
+# create a send message function
 def send_msg(event=None):  
     msg = client_msg.get()
     client_msg.set("")    
