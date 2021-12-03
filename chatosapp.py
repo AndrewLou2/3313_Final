@@ -96,7 +96,7 @@ send_button.grid(row=3,column=0,pady=20,padx=20,sticky=E)
 #using a protocol to handle window close event
 top.protocol("WM_DELETE_WINDOW", close_window)
 
-#creating socket with given AWS parameters
+#creating socket with local host address
 HOST = "127.0.0.1"
 PORT = 1236
 BUFFER_SIZE = 1024
