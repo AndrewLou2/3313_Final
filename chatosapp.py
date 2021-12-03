@@ -88,7 +88,7 @@ entry_field.bind("<Return>", send_msg)
 entry_field.config(bg='#FFFCF7')
 entry_field.grid(row=3,column=0,pady=20,padx=20,sticky=W)
 
-#creating a send button #uncomment somehting here
+#creating a send button
 send_button = tkinter.Button(top, text="send", width=10, height=1, font=('calibre',10,'bold'), command=send_msg)
 send_button.config(bg="#013A20", fg= "#FFFCF7",activeforeground= "#FFF", activebackground="#D2BF55")
 send_button.grid(row=3,column=0,pady=20,padx=20,sticky=E)
